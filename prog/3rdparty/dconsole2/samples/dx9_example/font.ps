@@ -1,0 +1,20 @@
+ texture tex0;
+ sampler baseMap: register(s0) = sampler_state  
+{												    
+Texture = (tex0);						    
+MipFilter = LINEAR;						   
+ MinFilter = LINEAR;						    
+MagFilter = LINEAR;							
+AddressU=CLAMP;									
+AddressV=CLAMP;								
+ };  				
+ 
+struct PS_IN                                  
+{                                                
+	float4 Color : COLOR;                         
+	float2 texCoord : TEXCOORD0;              
+};                                                                                         
+float4 main( PS_IN In ) : COLOR               
+{                                                
+	return In.Color*tex2D( baseMap, In.texCoord.xy );                         
+}                                            

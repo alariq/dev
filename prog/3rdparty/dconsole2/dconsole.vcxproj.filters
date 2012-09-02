@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="debug_console">
+      <UniqueIdentifier>{72ccabc1-d6b4-4fe5-8753-1552b4b10c2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug_console\console">
+      <UniqueIdentifier>{3d5a6033-7e1c-4d35-bffa-d299018cb8b7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="debug_console\command">
+      <UniqueIdentifier>{0ecb93aa-1804-41a7-b81c-a48f0daee326}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\cmd_test.cpp">
+      <Filter>debug_console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\common.cpp">
+      <Filter>debug_console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\console.cpp">
+      <Filter>debug_console\console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphic_console.cpp">
+      <Filter>debug_console\console</Filter>
+    </ClCompile>
+    <ClCompile Include="src\base_command.cpp">
+      <Filter>debug_console\command</Filter>
+    </ClCompile>
+    <ClCompile Include="src\command.cpp">
+      <Filter>debug_console\command</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\dconsole\common.h">
+      <Filter>debug_console</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dconsole\console.h">
+      <Filter>debug_console\console</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dconsole\graphic_console.h">
+      <Filter>debug_console\console</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dconsole\i_text_driver.h">
+      <Filter>debug_console\console</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dconsole\base_command.h">
+      <Filter>debug_console\command</Filter>
+    </ClInclude>
+    <ClInclude Include="include\dconsole\command.h">
+      <Filter>debug_console\command</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="article.txt" />
+  </ItemGroup>
+</Project>

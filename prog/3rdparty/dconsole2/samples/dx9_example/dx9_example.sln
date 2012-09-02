@@ -1,0 +1,29 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dx9_example", "dx9_example.vcproj", "{4AB74AB0-B9BA-4DAB-A353-EBDBECE376DE}"
+	ProjectSection(ProjectDependencies) = postProject
+		{7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8} = {7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "dconsole", "..\..\dconsole.vcproj", "{7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4AB74AB0-B9BA-4DAB-A353-EBDBECE376DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4AB74AB0-B9BA-4DAB-A353-EBDBECE376DE}.Debug|Win32.Build.0 = Debug|Win32
+		{4AB74AB0-B9BA-4DAB-A353-EBDBECE376DE}.Release|Win32.ActiveCfg = Release|Win32
+		{4AB74AB0-B9BA-4DAB-A353-EBDBECE376DE}.Release|Win32.Build.0 = Release|Win32
+		{7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8}.Debug|Win32.Build.0 = Debug|Win32
+		{7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8}.Release|Win32.ActiveCfg = Release|Win32
+		{7F49EA68-EFE9-4645-AFD5-A5C1D163C3E8}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

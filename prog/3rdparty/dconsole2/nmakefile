@@ -1,0 +1,55 @@
+root = .
+
+!include $(root)\build\config.nmake
+!include $(root)\build\c\rules.nmake
+!include $(root)\build\cxx\rules.nmake
+
+EXTRA_CPPFLAGS = -Iinclude/
+
+
+#########################################################################
+src =                                  						   \
+	src/base_command.cpp	\
+	src/cmd_test.cpp		\
+	src/command.cpp			\
+	src/console.cpp			\
+	src/graphic_console.cpp	\
+	src/common.cpp	\
+  
+#
+#
+obj = $(src:.cpp=.obj)
+obj = $(obj:.c=.obj)
+
+# Build.
+#
+libdconsole.a: $(obj)
+	$(AR) $(ARFLAGS) $@ $**
+!if "$(RANLIB)" != ""
+	$(RANLIB) $@
+!endif
+
+$(obj): config.h
+
+config.h: $(root)\config\config.nmake
+	echo "generating config.h"
+
+# Generated.
+#
+gen:
+
+
+# Test.
+#
+test: libdconsole.a
+
+# Clean.
+#
+# Nmake that comes with eVC++ 4 cannot handle del $(obj)
+# because the resulting line is too long.
+#
+cleanobj:
+	-del dconsole.a
+	-del *.obj
+
+clean: cleanobj

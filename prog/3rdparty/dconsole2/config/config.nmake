@@ -1,0 +1,29 @@
+# Toolchain.
+#
+
+CELL_PPU_HOST_PATH  	= $(CELL_SDK)\host-win32\ppu
+CELL_PPU_HOST_BIN_PATH  = $(CELL_PPU_HOST_PATH)\bin
+
+CC       = $(CELL_PPU_HOST_BIN_PATH)\ppu-lv2-gcc
+CFLAGS   = -W -Wall -fno-exceptions -fno-rtti -g
+CPPFLAGS =
+
+CXX      = $(CELL_PPU_HOST_BIN_PATH)\ppu-lv2-g++
+CXXFLAGS = -W -Wall -fno-exceptions -fno-rtti -g
+
+LD       = $(CXX)
+LDFLAGS  = $(CXXFLAGS)
+LIBS     =
+
+
+# Optional post-link command. The first argument to this command is
+# the executable name and the rest of the arguments are the object
+# files and libraries that were used to link this executable.
+#
+POSTLD   =
+
+# Set RANLIB to empty if your system does not need ranlib.
+#
+AR       = $(CELL_PPU_HOST_BIN_PATH)\ppu-lv2-ar
+ARFLAGS  = rc
+RANLIB   = $(CELL_PPU_HOST_BIN_PATH)\ppu-lv2-ranlib
