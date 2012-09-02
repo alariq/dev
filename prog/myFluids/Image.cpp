@@ -1,13 +1,7 @@
+// Image loading class, parts are taken from Humus framework.
+
 #include "Image.h"
-
-#include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
-
-//#include "math/vec.h"
-//#include "system/types.h"
-//#include "system/defines.h"
-
 
 #ifdef _WIN32
 #pragma warning(disable : 4996)

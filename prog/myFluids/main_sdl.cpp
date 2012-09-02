@@ -1,5 +1,5 @@
 /*
- * Console implementation example.
+ * Fluids implementation example.
  * alariq@gmail.com
  *
  * SDL code based on Michael Vance's SDL Tutorial
@@ -37,7 +37,7 @@
 #include "Fluids.h"
 #include "renderer.h"
 
-#include "ui.h"
+#include "utils/ui.h"
 
 /* Dimensions of our window. */
 static int g_width = 800;
@@ -263,11 +263,10 @@ static void draw_screen( void )
 	{
 		GLuint u, v;
 		g_fluids.getVelocityAccumTexture0(&u, &v);
-		//draw_quad(u, 1.0f);
 		draw_velocity->apply();
 		set_texture_for_sampler(draw_velocity, "u", 0, u);
 		set_texture_for_sampler(draw_velocity, "v", 1, v);
-		draw_quad(1.0f);
+		draw_quad(600.0f/800.0f); // compensate aspect (quad.vs tries to scale all to 0,1)
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glActiveTexture(GL_TEXTURE0);
@@ -412,7 +411,7 @@ int main( int argc, char* argv[] )
 	GraphicsConsole::Instance().setTextDriver(g_pTextDriver);
 	SDL_EnableKeyRepeat(500, 30);
 
-	draw_velocity = glsl_program::makeProgram("drawVelocity", "quad.vs", "draw_velocity.fs");
+	draw_velocity = glsl_program::makeProgram("drawVelocity", DATA_PATH"quad.vs", DATA_PATH"draw_velocity.fs");
 	assert(draw_velocity);
 
 	start_time = time(0);

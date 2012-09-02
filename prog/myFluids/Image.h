@@ -1,4 +1,7 @@
 /*
+
+Image loading class, parts are taken from Humus framework.
+
 Generic image class for 1D, 2D, 3D and Cubmaps.
 
 1D textures have height = 1 and depth = 1.

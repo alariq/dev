@@ -9,7 +9,7 @@
 #include "shader_builder.h"
 #include "input.h"
 
-#include "ui.h"
+#include "utils/ui.h"
 
 template <typename T>
 void swap(T& a, T& b)
@@ -18,9 +18,6 @@ void swap(T& a, T& b)
 	a = b;
 	b = t;
 }
-
-void set_boundaries2(glsl_program* do_set_bnd, int b, GLuint& tmp, GLuint& buf);
-
 
 static GLenum drawbuffers[4] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2, GL_COLOR_ATTACHMENT3 };
 
@@ -38,23 +35,23 @@ void TW_CALL UpdateVelStepCallback(void *clientData)
 
 void Fluids::createShaders()
 {
-	mark_velocity_ = glsl_program::makeProgram("mark_velocity", "quad.vs", "mark_velocity.fs");
-	mark_density_ = glsl_program::makeProgram("mark_density", "quad.vs", "mark_density.fs");
-	calc_density_ = glsl_program::makeProgram("calc_density", "quad.vs", "calc_density.fs");
+	mark_velocity_ = glsl_program::makeProgram("mark_velocity", DATA_PATH"quad.vs", DATA_PATH"mark_velocity.fs");
+	mark_density_ = glsl_program::makeProgram("mark_density", DATA_PATH"quad.vs", DATA_PATH"mark_density.fs");
+	calc_density_ = glsl_program::makeProgram("calc_density", DATA_PATH"quad.vs", DATA_PATH"calc_density.fs");
 
-	do_diffuse_method1_ = glsl_program::makeProgram("do_diffuse_method1", "quad.vs", "do_diffuse_method1.fs");
-	do_diffuse_simple_ = glsl_program::makeProgram("do_diffuse_simple", "quad.vs", "do_diffuse_simple.fs");
-	do_advect_ = glsl_program::makeProgram("do_advect", "quad.vs", "do_advect.fs");
-	do_updvel_ = glsl_program::makeProgram("do_updvel", "quad.vs", "do_updvel.fs");
+	do_diffuse_method1_ = glsl_program::makeProgram("do_diffuse_method1", DATA_PATH"quad.vs", DATA_PATH"do_diffuse_method1.fs");
+	do_diffuse_simple_ = glsl_program::makeProgram("do_diffuse_simple", DATA_PATH"quad.vs", DATA_PATH"do_diffuse_simple.fs");
+	do_advect_ = glsl_program::makeProgram("do_advect", DATA_PATH"quad.vs", DATA_PATH"do_advect.fs");
+	do_updvel_ = glsl_program::makeProgram("do_updvel", DATA_PATH"quad.vs", DATA_PATH"do_updvel.fs");
 
-	do_project_a_ = glsl_program::makeProgram("do_project_a", "quad.vs", "do_project_a.fs");
-	do_project_b_ = glsl_program::makeProgram("do_project_b", "quad.vs", "do_project_b.fs");
-	do_project_c_ = glsl_program::makeProgram("do_project_c", "quad.vs", "do_project_c.fs");
+	do_project_a_ = glsl_program::makeProgram("do_project_a", DATA_PATH"quad.vs", DATA_PATH"do_project_a.fs");
+	do_project_b_ = glsl_program::makeProgram("do_project_b", DATA_PATH"quad.vs", DATA_PATH"do_project_b.fs");
+	do_project_c_ = glsl_program::makeProgram("do_project_c", DATA_PATH"quad.vs", DATA_PATH"do_project_c.fs");
 
-	do_set_bnd_ = glsl_program::makeProgram("do_set_bnd", "quad.vs", "do_set_boundary.fs");
+	do_set_bnd_ = glsl_program::makeProgram("do_set_bnd", DATA_PATH"quad.vs", DATA_PATH"do_set_boundary.fs");
 
-	clear_rts4_ = glsl_program::makeProgram("clear_rts4", "quad.vs", "clear_rts4.fs");
-	do_copy_ = glsl_program::makeProgram("do_copy", "quad.vs", "do_copy.fs");
+	clear_rts4_ = glsl_program::makeProgram("clear_rts4", DATA_PATH"quad.vs", DATA_PATH"clear_rts4.fs");
+	do_copy_ = glsl_program::makeProgram("do_copy", DATA_PATH"quad.vs", DATA_PATH"do_copy.fs");
 }
 
 void Fluids::createBuffers()
@@ -325,7 +322,7 @@ void Fluids::drawBuffers(mouse_data* pmouse, float dt)
 }
 
 // final result in x
-void Fluids::diffuse(float dt, float b, GLuint& temp_x, GLuint& x, GLuint& x0, const bool method1/* = false*/)
+void Fluids::diffuse(float dt, int b, GLuint& temp_x, GLuint& x, GLuint& x0, const bool method1/* = false*/)
 {
 	setFrameBuffer(frambuffer_);
 
@@ -418,7 +415,7 @@ void Fluids::advect(float dt, int b, GLuint& d, GLuint d0, GLuint u, GLuint v)
 	
 	draw_quad(1);
 
-	set_boundaries2(do_set_bnd_, b, p_prev_, d);
+	set_boundaries(b, p_prev_, d);
 
 	glActiveTexture(GL_TEXTURE0 + 2);
 	glBindTexture(GL_TEXTURE_2D, 0);
@@ -454,7 +451,6 @@ void Fluids::project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div)
 	set_texture_for_sampler(do_project_a_, "v", 1, v);
 	draw_quad(1);
 
-	glFlush();
 	setRenderTexture(0,0);
 	setRenderTexture(0,1);
 	setRenderTexture(0,2);
@@ -472,9 +468,8 @@ void Fluids::project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div)
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 
-	//set_boundaries(0, p_prev_, div);
-	set_boundaries2(do_set_bnd_, 0, p_prev_, div);
-	glFlush();
+	set_boundaries(0, p_prev_, div);
+
 	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	setRenderTexture(0,0);
@@ -487,10 +482,9 @@ void Fluids::project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div)
 		setRenderTexture(p_prev_,0);
 		glDrawBuffers(1, drawbuffers);
 		checkFramebufferStatus();
-		glFlush();
+		
 		set_texture_for_sampler(do_project_b_, "div", 0, div);
 		set_texture_for_sampler(do_project_b_, "p", 1, p);
-		glFlush();
 		draw_quad(1);
 		
 		swap(p_prev_, p); // p has result
@@ -500,10 +494,7 @@ void Fluids::project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div)
 		
 	}
 
-	//glFlush();
 	setRenderTexture(0,0);
-
-	
 
 	// stage 3
 	do_project_c_->apply();
@@ -544,10 +535,9 @@ void Fluids::project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div)
 	setRenderTexture(3,0);
 }
 
-void Fluids::set_boundaries(float b, GLuint& tmp, GLuint& buf)
+void Fluids::set_boundaries(int b, GLuint& tmp, GLuint& buf)
 {
-	return;
-	do_set_bnd_->setFloat("b", b);
+	do_set_bnd_->setInt("b", b);
 	do_set_bnd_->apply();
 
 	setRenderTexture(tmp,0);
@@ -556,104 +546,9 @@ void Fluids::set_boundaries(float b, GLuint& tmp, GLuint& buf)
 
 	set_texture_for_sampler(do_set_bnd_, "x", 0, buf);
 	draw_quad(1);
+	//glUseProgram(0);
 	swap(tmp, buf);
 	
 }
-
-void set_boundaries2(glsl_program* do_set_bnd, int b, GLuint& tmp, GLuint& buf)
-{
-	do_set_bnd->setInt("b", b);
-	do_set_bnd->apply();
-
-	setRenderTexture(tmp,0);
-	glDrawBuffer(GL_COLOR_ATTACHMENT0);
-
-
-	set_texture_for_sampler(do_set_bnd, "x", 0, buf);
-	draw_quad(1.0f);
-	glUseProgram(0);
-	//setRenderTexture(0,0);
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, 0);
-
-	swap(tmp, buf);
-	
-}
-
-//void Fluids::advect(float dt, GLuint out, GLuint vel)
-//{
-//	setFrameBuffer(frambuffer_);
-//
-//	do_advect_->setFloat("dt", dt);
-//	do_advect_->apply();
-//	
-//	setRenderTexture(density_accum2_);
-//	checkFramebufferStatus();
-//
-//	//assert(do_advect_->samplers_.count("density") && do_advect_->samplers_.count("velocity"));
-//
-//	glEnable(GL_TEXTURE_2D);
-//
-//	if(do_advect_->samplers_.count("density") )
-//	{
-//		glActiveTexture(GL_TEXTURE0 + 1);
-//		glBindTexture(GL_TEXTURE_2D, density_accum_);
-//		glUniform1i(do_advect_->samplers_["density"]->index_, 1);
-//	}
-//
-//	if(do_advect_->samplers_.count("velocity"))
-//	{
-//		glActiveTexture(GL_TEXTURE0 + 0);
-//		glBindTexture(GL_TEXTURE_2D, velocity_accum_);
-//		glUniform1i(do_advect_->samplers_["velocity"]->index_, 0);
-//	}
-//	
-//	draw_quad(1);
-//
-//	swap(density_accum_, density_accum2_);
-//
-//	glActiveTexture(GL_TEXTURE0 + 1);
-//	glBindTexture(GL_TEXTURE_2D, 0);
-//
-//	glActiveTexture(GL_TEXTURE0);
-//	glBindTexture(GL_TEXTURE_2D, 0);
-//	
-//	glDisable(GL_TEXTURE_2D);
-//
-//	glUseProgram(0);
-//}
-
-void Fluids::update_vel(float dt)
-{
-
-	/*setFrameBuffer(frambuffer_);
-
-	do_updvel_->setFloat("dt", dt);
-	do_updvel_->apply();
-
-	setRenderTexture(velocity_accum2_);
-	checkFramebufferStatus();
-
-	glEnable(GL_TEXTURE_2D);
-
-	if(do_updvel_->samplers_.count("velocity0"))
-	{
-		glActiveTexture(GL_TEXTURE0 + 0);
-		glBindTexture(GL_TEXTURE_2D, velocity_accum_);
-		glUniform1i(do_updvel_->samplers_["velocity0"]->index_, 0);
-	}
-
-	draw_quad(1);
-
-	swap(velocity_accum_, velocity_accum2_);
-
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	glDisable(GL_TEXTURE_2D);
-
-	glUseProgram(0);*/
-}
-
 
 	

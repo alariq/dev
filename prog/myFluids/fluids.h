@@ -4,6 +4,8 @@
 struct glsl_program;
 struct mouse_data;
 
+#define DATA_PATH "data/"
+
 #include "AntTweakBar.h"
 
 class Fluids {
@@ -53,12 +55,10 @@ private:
 	glsl_program* do_copy_;
 	
 
-	void diffuse(float dt, float b, GLuint& temp_x, GLuint& x, GLuint& x0, const bool method1 = false);
+	void diffuse(float dt, int b, GLuint& temp_x, GLuint& x, GLuint& x0, const bool method1 = false);
 	void advect(float dt, int b, GLuint& d, GLuint d0, GLuint u, GLuint v);
 	void project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div);
-	void set_boundaries(float b, GLuint& tmp, GLuint& buf);
-
-	void update_vel(float dt);
+	void set_boundaries(int b, GLuint& tmp, GLuint& buf);
 
 	const static int NUM_OP = 20;
 
