@@ -20,9 +20,9 @@ void main(void)
 	
 	float d = distance(128*pos.xy, mouse.xy);
 	float cd = clamp(d,0.0, radius);
-	float color = (radius - cd)/(5*radius) + 0.55*(1-step(radius, cd));
+	float color = (radius - cd)/(20*radius) + 0.75*(1-step(radius, cd));
 
-	vec2 r = color*0.05*mouse.zw + vel0;
+	vec2 r = color*0.05*vec2(mouse.z, -mouse.w) + vel0;
 	gl_FragData[0] = //vec4(d,0,0,u0);
 			vec4(r.x,0,0,1);//vec4(r.x, 0,0,1);
 	gl_FragData[1] = //vec4(d,0,0,v0);
