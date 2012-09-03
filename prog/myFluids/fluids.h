@@ -60,7 +60,7 @@ private:
 	void project(float dt, GLuint& u, GLuint& v, GLuint& p, GLuint& div);
 	void set_boundaries(int b, GLuint& tmp, GLuint& buf);
 
-	const static int NUM_OP = 20;
+	const static int NUM_OP = 50;
 
 	eDrawMode draw_mode_; 
 	eDrawMode view_mode_; 
@@ -84,6 +84,7 @@ public:
 
 	GLuint getDensityTexture() { return density_; }
 	GLuint getDensityAccumTexture() { return density_accum0_; }
+	GLuint getPressureAccumTexture() { return velocity_accum_u0_; }
 
 	
 	eDrawMode getDrawMode() { return draw_mode_; }

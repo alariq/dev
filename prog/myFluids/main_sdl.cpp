@@ -55,6 +55,7 @@ static bool g_exit = false;
 
 static Fluids g_fluids;
 static glsl_program* draw_velocity = 0;
+static glsl_program* draw_fluids = 0;
 
 struct camera
 {
@@ -255,9 +256,13 @@ static void draw_screen( void )
 	
 	if(Fluids::DM_DENSITY == g_fluids.getViewMode())
 	{
-		//glActiveTexture(GL_TEXTURE0);
-		draw_quad(g_fluids.getDensityAccumTexture(), 1.0f);
-		//glBindTexture(GL_TEXTURE_2D, 0);
+		GLuint d = g_fluids.getDensityAccumTexture();
+		draw_fluids->apply();
+		set_texture_for_sampler(draw_fluids, "d", 0, d);
+		draw_quad(600.0f/800.0f); // compensate aspect (quad.vs tries to scale all to 0,1)
+		glActiveTexture(GL_TEXTURE0);
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glUseProgram(0);
 	}
 	else if(Fluids::DM_VELOCITY0 == g_fluids.getViewMode())
 	{
@@ -412,6 +417,7 @@ int main( int argc, char* argv[] )
 	SDL_EnableKeyRepeat(500, 30);
 
 	draw_velocity = glsl_program::makeProgram("drawVelocity", DATA_PATH"quad.vs", DATA_PATH"draw_velocity.fs");
+	draw_fluids = glsl_program::makeProgram("drawFluids", DATA_PATH"quad.vs", DATA_PATH"draw_fluids.fs");
 	assert(draw_velocity);
 
 	start_time = time(0);

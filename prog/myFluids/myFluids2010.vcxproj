@@ -61,7 +61,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>sdl.lib;sdlmain.lib;opengl32.lib;glu32.lib;glew32.lib;AntTweakBar.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>./lib;../3rdparty/glew/lib;..\3rdparty\AntTweakBar\lib;$(AMDAPPSDKROOT)lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>./lib;../3rdparty/glew/lib;..\3rdparty\AntTweakBar\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <IgnoreSpecificDefaultLibraries>msvcrt.lib;%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Console</SubSystem>

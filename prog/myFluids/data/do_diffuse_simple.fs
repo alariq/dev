@@ -8,7 +8,7 @@ uniform float b; // boundary value
 #define HALF_PIX vec2(0.5/128.0, 0.5/128)
 void main(void)
 {
-	float diff = 0.003;
+	float diff = 0.001;
 	float N = 128;
 	
 	vec2 tp = pos.xy;// - vec2(0.5/128.0, 0.5/128); 
