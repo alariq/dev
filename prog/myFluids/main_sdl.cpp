@@ -39,6 +39,13 @@
 
 #include "utils/ui.h"
 
+ // to fix VS2015 issue with __imp____iob_func
+FILE _iob[] = { *stdin, *stdout, *stderr };
+extern "C" FILE * __cdecl __iob_func(void)
+{
+	return _iob;
+}
+
 /* Dimensions of our window. */
 static int g_width = 800;
 static int g_height = 600;

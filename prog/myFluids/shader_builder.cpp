@@ -146,22 +146,30 @@ glsl_shader* glsl_shader::makeShader(Shader_t stype, const char* fname)
 
     if(stype == glsl_shader::VERTEX)
     {
+		// this is some crazy code, we should not delete objects which are used in shaders previously loaded
+		// though we'll have memeory leaks here, because new pshader will be inserted in place of old (if it has same neme)
+		// but at least we will not delete old one. Have to rethink what is going on here
+		/*
         if(s_vertex_shaders.count(fname))
 		{
 			glsl_shader* pshader = s_vertex_shaders[fname];
 			s_vertex_shaders.erase(fname);
             delete pshader;
 		}
+		*/
         s_vertex_shaders.insert( std::make_pair(pshader->fname_, pshader) );
     }
     else
     {
-        if(s_fragment_shaders.count(fname))
+		// this is some crazy code, we should not delete objects which are used in shaders previously loaded
+		// though we'll have memeory leaks here, because new pshader will be inserted in place of old (if it has same neme)
+		// but at least we will not delete old one. Have to rethink what is going on here
+        /*if(s_fragment_shaders.count(fname))
 		{
 			glsl_shader* pshader = s_fragment_shaders[fname];
 			s_fragment_shaders.erase(fname);
             delete pshader;
-		}
+		}*/
         s_fragment_shaders.insert( std::make_pair(pshader->fname_, pshader) );
     }
   
